@@ -240,17 +240,22 @@ const arr = [];
 resultBtn.addEventListener('click', () => {
 
 
-	let max = 99;
-	for (let i = 0; i <2; i++) {
-		arr[i] = randomInteger(1,max);
+	let max = 100,
+		sum = 0;
+	for (let i = 0; i < 3; i++) {
+		arr[i] = randomInteger(1, max-2);
 		progress[i].style.height = arr[i] + '%';
 		result[i].innerHTML = arr[i] + '%';
-		max = 100 - arr[i];
+		max -= arr[i];
+		sum +=arr[i];
+		if (sum !=100) {
+			arr[2] = 100 - arr[1] - arr[0];
+			progress[2].style.height = arr[2] + '%';
+			result[2].innerHTML = arr[2] + '%';
+		}
+
 	}
 	
-	arr[2] = 100 - arr[0] - arr[1];
-	progress[2].style.height = arr[2] + '%';
-	result[2].innerHTML = arr[2] + '%';
 
 	if (arr[0] > arr[1] && arr[0] > arr[2]) {
 		candidates[0].classList.add('main-cards-item-active');
@@ -274,19 +279,11 @@ let crimeBtn = document.getElementById('crime');
 
 crimeBtn.addEventListener('click', () => {
 
-	arr[1] += 25;
+	arr[1] = 25 + randomInteger(1,73);
+	arr[0] = randomInteger(1, 99 - arr[1]);
+	arr[2] = 100 - arr[0] - arr[1];
 
-	arr[0] -= 12;
-	arr[2] -= 13;
-	for (let i = 0; i <3; i++) {
-	if(arr[i] < 0) {
-		arr[i] = 0;
-	};
-	if(arr[i] > 100) {
-		arr[i] = 100;
-	};
 
-}
 	for (let i = 0; i <3; i++) {
 		progress[i].style.height = arr[i] + '%';
 		result[i].innerHTML = arr[i] + '%';
