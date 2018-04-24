@@ -1,9 +1,12 @@
+window.addEventListener('DOMContentLoaded', function () {
+
+
 //Модальное окно
 
 let popupBtn = document.querySelector('.popup-btn'), 
 	custom_elem = document.querySelectorAll('.custom > div'),
 	overlay = document.querySelector('.overlay'),
-	popup = document.querySelector('.popup'),
+	 
 	main = document.querySelector('.main'),
 	custom = document.querySelector('.custom');
  		
@@ -27,7 +30,6 @@ let candidate_name = document.getElementById('name'),
 	candidate_view = document.querySelectorAll('select > option'),
 	female = document.getElementById('female'),
 	male = document.getElementById('male'),
-	candidate_sex = document.querySelector('.radio'),
 	cards = document.querySelector('.main-cards'),
 	candidates = document.getElementsByClassName('main-cards-item'),
 	names = document.getElementsByClassName('name'),
@@ -43,27 +45,40 @@ let candidate_name = document.getElementById('name'),
 	const candidate = {		 
 		candidateName: name,
 		candidateAge: age,
-		candidateBio: bio , 
+		candidateBio: bio, 
 	};
 
 
 candidate_name.addEventListener('change', () => {
 
 	let name =  candidate_name.value;
-	if(isNaN(name) && name != '') { 
-		candidate.candidateName = name;
+	    
+	if(!(isNaN(name)) && name === '') { 
+		alert('Введите верное ФИО');
+   		candidate_name.value = '';
+	} else if (name.length < 4) {
+		alert('Слишком короткое имя');
+   		candidate_name.value = '';
+	} else if ( !(/[а-яё]/i.test(name))) {
+		alert('Введите на русском языке');
+   		candidate_name.value = '';
+	} 
+	else {
+   		candidate.candidateName = name;
 	}
 });
 
 candidate_age.addEventListener('change', () => {
-   	 let age =  candidate_age.value;
-   		if(age == '' || isNaN(age)) { 			 
+   	
+   	let age =  candidate_age.value;
+   	
+   	if(age === '' || isNaN(age)) { 			 
    		alert('Введите число');
    		candidate_age.value = '';	
    	} else if (age < 35) {
    		alert('Кандидату нет должно быть больше 35 лет');
    		candidate_age.value = '';
-   	} else if (age > 100) {
+   	} else if (age > 70) {
    		alert('Кандидат слишком старый');
    		candidate_age.value = '';
    	} else {
@@ -74,81 +89,107 @@ candidate_age.addEventListener('change', () => {
 
 candidate_bio.addEventListener('change', () => { 
 	let bio =  candidate_bio.value;
-	if(bio != '') {
+	if(bio === '' || bio.length < 8) {
+		alert('Слишком короткая биография');
+   		candidate_bio.value = '';
+		} else if ( !(/[а-яё]/i.test(bio))) {
+		alert('Введите на русском языке');
+   		candidate_bio.value = '';
+	}  else {
 		candidate.candidateBio = bio;
 	}
+
 });
 
-female.onchange = function() {
-	slides.style.backgroundImage = 'url(img/construct-1.png)';
-	slide.style.backgroundImage = 'url(img/construct-1.png)';
-};
-male.onchange = function() {
-	slides.style.backgroundImage = 'url(img/construct-6.png)';
-	slide.style.backgroundImage = 'url(img/construct-6.png)';
-};
 
-//слайдер 
-
-let slideIndex = 1,
+	let slideIndex = 5,
 	slides = document.getElementsByClassName('person-easy')[0],
-	slide = document.getElementsByClassName('preview')[0]
+	slide = document.getElementsByClassName('preview')[0],
 	prev = document.querySelector('.prev'),
 	next = document.querySelector('.next');  
 
-	showSlides(slideIndex);
+ 
 
-	function showSlides(n) {
+
+maleShow();
+  function maleShow() {
+	showSlides(slideIndex);
+	function showSlides(n) { 
 
 		if (n > 8) {
-			slideIndex = 1;
+			slideIndex = 5;
 		}
 
-		if (n < 1) {
+		if (n < 5) {
 			slideIndex = 8;
 		}
-
-		for (let i=1; i < n; i++) {
-			slides.style.backgroundImage = 'url(img/construct-' + i+ '.png)';
-			slide.style.backgroundImage = 'url(img/construct-' + i+ '.png)';
+ 
+			slides.style.backgroundImage = 'url(img/construct-' + slideIndex + '.png)';
+			slide.style.backgroundImage = 'url(img/construct-' + slideIndex + '.png)';
 			 
-			if (i > 0 && i < 5) {
-				female.checked = true;
-			}
-			if (i > 4 && i < 9) {
-				male.checked = true;
-			}
-		}	 
-	}
+    }
 
 	function plusSlides(n) {
 		showSlides(slideIndex += n); 
 	}
-
-	function currentSlide(n) {
-		showSlides(slideIndex = n); 
-	}
-
-	prev.addEventListener('click', function() {
+	prev.onclick = function() {
 	  plusSlides(-1);
-	});
+	};
 
-	next.addEventListener('click', function() {
+	next.onclick = function() {
 	  plusSlides(1);
-	});
+	};
+}
 
+//слайдер 
+female.addEventListener('click', () => {
+femaleShow();
+  function femaleShow() {
+	showSlides(slideIndex);
+	function showSlides(n) { 
+
+		if (n > 4) {
+			slideIndex = 1;
+		}
+
+		if (n < 1) {
+			slideIndex = 4;
+		}
+ 
+			slides.style.backgroundImage = 'url(img/construct-' + slideIndex + '.png)';
+			slide.style.backgroundImage = 'url(img/construct-' + slideIndex + '.png)';
+			 
+    }
+
+	function plusSlides(n) {
+		showSlides(slideIndex += n); 
+	}
+	prev.onclick = function() {
+	  plusSlides(-1);
+	};
+
+	next.onclick = function() {
+	  plusSlides(1);
+	};
+}
+});
+
+
+male.addEventListener('click',() => {
+	maleShow();
+});
 			  
 
 //кнопка готово
 
 readyBtn.addEventListener('click', function() {
-if(candidate_name.value != '' && candidate_age.value != '' && candidate_bio.value != '') {	
+if(candidate_name.value !== '' && candidate_age.value !== '' && candidate_bio.value !== '') {	
 	main.style.display = 'block'; 
 	custom.style.display = 'none';
 
 	for (var i = 0; i < custom_elem.length; i++) {
 	    custom_elem[i].style.display = 'none';
-	    };
+	    }
 
 	candidates[0].classList.remove('main-cards-item-active');
 
@@ -168,13 +209,13 @@ if(candidate_name.value != '' && candidate_age.value != '' && candidate_bio.valu
 	ages[1].innerHTML = candidate.candidateAge + ' лет';
 	bios[1].innerHTML = candidate.candidateBio;
 	
-	if (male.checked = true) {
+	if (male.checked === true) {
 		sexs[1].innerHTML = 'Мужской';
-	};
+	}
 	
-	if (female.checked = true) {
+	if (female.checked === true) {
 		sexs[1].innerHTML = 'Женский';
-	};
+	}
 
    	if (candidate_view[1].selected) { 
    		let view = '';
@@ -220,6 +261,13 @@ reset.addEventListener('click', () => {
 
 	for (var i = 0; i < custom_elem.length; i++) {
 	    custom_elem[i].style.display = 'block';
+	    candidate_name.value = '';
+		candidate_age.value = '';
+		candidate_bio.value = '';
+		male.checked = true;
+		slides.style.backgroundImage = 'url(img/construct-5.png)';
+		slide.style.backgroundImage = 'url(img/construct-5.png)';
+		candidate_view[0].selected = true;
 	    }
 
 });
@@ -304,5 +352,6 @@ crimeBtn.addEventListener('click', () => {
 		candidates[0].classList.remove('main-cards-item-active');
 	}
 
+});
 });
 
