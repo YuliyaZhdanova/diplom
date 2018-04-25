@@ -76,7 +76,7 @@ candidate_age.addEventListener('change', () => {
    		alert('Введите число');
    		candidate_age.value = '';	
    	} else if (age < 35) {
-   		alert('Кандидату нет должно быть больше 35 лет');
+   		alert('Кандидату должно быть больше 35 лет');
    		candidate_age.value = '';
    	} else if (age > 70) {
    		alert('Кандидат слишком старый');
